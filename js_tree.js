@@ -58,20 +58,46 @@ function makeTree() {
       document.getElementById("main").appendChild(aside);
       var nodeList = document.createElement("ol");
       aside.appendChild(nodeList);
+      //decorates the code and gets the CSS for it to have some color
       var sourceArticle = document.querySelectorAll("#main article");
       // calls the function using these parameters
-      makeBranches(nodeList, sourceArticle);
+      makeBranches(sourceArticle, nodeList);
 }
 
 function makeBranches(treeNode, nestedList) {
       nodeCount += 1;
       var liElem = document.createElement("li");
       var spanElem = document.createElement("span");
-      liElem.appendChild("+--" + spanElem);
+      var extra = document.createTextNode("+--");
       liElem.appendChild(spanElem);
+      liElem.innerHTML += "+--";
       nestedList.appendChild(liElem);
-}
 
+
+      if (treeNode.nodeType === 1){
+            elemCount++;
+            spanElem.class = "elementNode";
+            spanElem.textContent = "<" + treeNode.nodeName + ">";
+      } else if (treeNode.nodeType === 3) {
+            textCount++;
+            var textString = treeNode.nodeValue;
+            if (isWhiteSpaceNode(textString) === true) {
+                  wsCount++;
+                  spanElem.setAttribute("class", "whiteSpaceNode");
+                  spanElem.textContent = "#text";
+            } else if (isWhiteSpaceNode(textString) === false) {
+                  spanElem.setAttribute("class", "textNode");
+                  spanElem.textContent = textString;
+            }
+
+      }
+}
+for (var n = 0; n !== null; n++) {
+
+}
+if (treeNode.childNodes[i] > 0) {
+
+}
 
 // dont touch
 function isWhiteSpaceNode(tString) {
