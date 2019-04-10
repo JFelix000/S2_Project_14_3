@@ -44,6 +44,7 @@ var wsCount = 0;
 
 // starts the makeTree function when the code starts
 window.onload =  makeTree;
+
 function makeTree() {
       // creates an aside
       var aside = document.createElement("aside");
@@ -54,29 +55,34 @@ function makeTree() {
       // sets the text content
       h1.textContent = "Node Tree";
       // combines the two
-            aside.appendChild(h1);
+      aside.appendChild(h1);
       document.getElementById("main").appendChild(aside);
       var nodeList = document.createElement("ol");
       aside.appendChild(nodeList);
       //decorates the code and gets the CSS for it to have some color
-      var sourceArticle = document.querySelectorAll("#main article");
+      var sourceArticle = document.querySelector("#main article");
       // calls the function using these parameters
       makeBranches(sourceArticle, nodeList);
+      // this is to make the number of nodes appear in the code and it can be shown by the element names
+      document.getElementById('totalNodes').textContent = nodeCount;
+      document.getElementById('elemNodes').textContent = elemCount;
+      document.getElementById('textNodes').textContent = textCount;
+      document.getElementById('wsNodes').textContent = wsCount;
 }
 
 function makeBranches(treeNode, nestedList) {
-      nodeCount += 1;
+      nodeCount++;
       var liElem = document.createElement("li");
-      var spanElem = document.createElement("span");
-      var extra = document.createTextNode("+--");
-      liElem.appendChild(spanElem);
       liElem.innerHTML += "+--";
+      var spanElem = document.createElement("span");
+      liElem.appendChild(spanElem);
       nestedList.appendChild(liElem);
 
-
+      // This is to select the element type via the nodeType attribute values in google
       if (treeNode.nodeType === 1){
             elemCount++;
-            spanElem.class = "elementNode";
+            spanElem.setAttribute("class", "elementNode")
+            //nodeName is to get the name of the node and use that value in the code
             spanElem.textContent = "<" + treeNode.nodeName + ">";
       } else if (treeNode.nodeType === 3) {
             textCount++;
@@ -89,15 +95,19 @@ function makeBranches(treeNode, nestedList) {
                   spanElem.setAttribute("class", "textNode");
                   spanElem.textContent = textString;
             }
-
+      }
+      // this is to check if the treeNode child nodes are more than 0, and if they are execute the other code
+      if (treeNode.childNodes.length > 0) {
+            // newList makes the new ol and innerHTML selects the code inside the tag so that you can make it say |
+            var newList = document.createElement("ol");
+            newList.innerHTML = "|";
+            nestedList.appendChild(newList);
+            for (var n = treeNode.firstChild; n !== null; n = n.nextSibling) {
+                  makeBranches(n, newList);
+            }
       }
 }
-for (var n = 0; n !== null; n++) {
 
-}
-if (treeNode.childNodes[i] > 0) {
-
-}
 
 // dont touch
 function isWhiteSpaceNode(tString) {
